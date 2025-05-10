@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LargeFileGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "-o input.txt -s 10240"
+    }
+  }
+}
