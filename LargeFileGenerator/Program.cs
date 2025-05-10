@@ -10,6 +10,6 @@ Parser.Default.ParseArguments<Options>(args)
         IFileGenerator fileGenerator = new FileGenerator(options);
         fileGenerator.GenerateFile();
         stopwatch.Stop();
-        Console.WriteLine(stopwatch.Elapsed);
+        Console.WriteLine($"File generated in: {stopwatch.Elapsed}");
     });
 

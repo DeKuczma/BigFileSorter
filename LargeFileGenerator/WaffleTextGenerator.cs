@@ -3,10 +3,10 @@ using WaffleGenerator;
 
 namespace LargeFileGenerator
 {
-    public class BogusTextGenerator : ITextGenerator
+    public class WaffleTextGenerator : ITextGenerator
     {
         private readonly Random _random;
-        public BogusTextGenerator()
+        public WaffleTextGenerator()
         {
             _random = new();
         }

@@ -23,7 +23,7 @@
         public FileGenerator(Options options)
         {
             _random = new();
-            _textGenerator = new BogusTextGenerator();
+            _textGenerator = new WaffleTextGenerator();
             randomizedSentences = new();
 
             _outputFilePath = options.OutputFile;
@@ -44,8 +44,7 @@
             {
                 while (sizeWritten < TargetSize)
                 {
-
-                    long number = _random.Next();
+                    int number = _random.Next();
                     int numberLength = number.ToString().Length;
 
                     sizeWritten += numberLength + _separationString.Length;
