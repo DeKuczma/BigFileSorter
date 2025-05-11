@@ -1,50 +1,29 @@
-﻿using LargeFileSorter;
+﻿using CommandLine;
+using LargeFileSorter;
 using LargeFileSorter.FileMerge;
-using System.Collections.Concurrent;
 using System.Diagnostics;
 
 
-//Parser.Default.ParseArguments<Options>(args)
-//    .WithParsed(async (options) => {
-//        var stopwatch = new Stopwatch();
-//        stopwatch.Start();
+Options options = null;
+Parser.Default.ParseArguments<Options>(args)
+    .WithParsed(o => options = o);
 
-//        BlockingCollection<string> generatedFiles = new BlockingCollection<string>();
-//        //IFileMerge fileMerge = new MemoryEfficientFileMerge();
-//        //IFileMerge fileMerge = new InMemoryFileMerge();
-
-//        Directory.CreateDirectory(ConstStrings.TEMP_DIRECOTRY + Path.DirectorySeparatorChar);
-//        FileSplitter splitter = new FileSplitter();
-
-//        await splitter.SplitFile("input_long_lines.txt", generatedFiles);
-
-//        //var mergerOrchestrator = new FileMergerOrchestrator(FileMergerEnumerator.InMemory);
-//        //await mergerOrchestrator.OrchestrateFileMerge(generatedFiles, "output.txt");
-//        //fileMerge.MergeFiles("input_large1.txt", "input_large2.txt", $"{tempFolderPath}result.txt");
-
-
-
-//        stopwatch.Stop();
-//        Console.WriteLine($"File sorted in: {stopwatch.Elapsed}");
-//    });
+if (options == null)
+    return;
 
 var stopwatch = new Stopwatch();
 stopwatch.Start();
 
 Queue<string> generatedFiles = new Queue<string>();
 var mergerOrchestrator = new FileMergerOrchestrator(FileMergerEnumerator.InMemory);
-//IFileMerge fileMerge = new MemoryEfficientFileMerge();
-//IFileMerge fileMerge = new InMemoryFileMerge();
 
 Directory.CreateDirectory(ConstStrings.TEMP_DIRECOTRY + Path.DirectorySeparatorChar);
 FileSplitter splitter = new FileSplitter();
 
-await splitter.SplitFile("input_new_large.txt", generatedFiles);
+await splitter.SplitFile(options.InputFile, generatedFiles);
 
-await mergerOrchestrator.OrchestrateFileMerge(generatedFiles, "output.txt");
-//fileMerge.MergeFiles("input_large1.txt", "input_large2.txt", $"{tempFolderPath}result.txt");
-
-
+await mergerOrchestrator.OrchestrateFileMerge(generatedFiles,options.OutputFile);
 
 stopwatch.Stop();
 Console.WriteLine($"File sorted in: {stopwatch.Elapsed}");
+

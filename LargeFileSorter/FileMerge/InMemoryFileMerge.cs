@@ -1,4 +1,5 @@
 ﻿using LargeFileSorter.Models;
+using System.Text;
 
 namespace LargeFileSorter.FileMerge
 {
@@ -6,9 +7,9 @@ namespace LargeFileSorter.FileMerge
     {
         public void MergeFiles(string firstFile, string secondFile, string outputFile)
         {
-            using (var firstReader = new StreamReader(firstFile))
-            using (var secondReader = new StreamReader(secondFile))
-            using (var writer = new StreamWriter(outputFile))
+            using (var firstReader = new StreamReader(firstFile, Encoding.UTF8, true, Options.ReaderBuferSize))
+            using (var secondReader = new StreamReader(secondFile, Encoding.UTF8, true, Options.ReaderBuferSize))
+            using (var writer = new StreamWriter(outputFile, false, Encoding.UTF8, Options.WriterBuferSize))
             {
                 var firstString = firstReader.ReadLine();
                 var secondString = secondReader.ReadLine();

@@ -1,4 +1,5 @@
 ﻿using LargeFileSorter.Comparators;
+using System.Text;
 
 namespace LargeFileSorter.FileMerge
 {
@@ -15,7 +16,7 @@ namespace LargeFileSorter.FileMerge
         {
             using (var firstReader = new MyStreamReader(firstFile))
             using (var secondReader = new MyStreamReader(secondFile))
-            using (var writer = new StreamWriter(outputFile))
+            using (var writer = new StreamWriter(outputFile, false, Encoding.UTF8, Options.WriterBuferSize))
             {
                 var readers = new MyStreamReader[] { firstReader, secondReader };
                 while (!readers[0].EndOfStream || !readers[1].EndOfStream)
