@@ -1,13 +1,23 @@
-﻿using LargeFileSorter.FileMerge;
+﻿using CommandLine;
+using LargeFileSorter;
+using LargeFileSorter.FileMerge;
 using System.Diagnostics;
 
 
-var stopwatch = new Stopwatch();
-stopwatch.Start();
+Parser.Default.ParseArguments<Options>(args)
+    .WithParsed((options) => {
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
 
-IFileMerge fileMerge = new MemoryEfficientFileMerge();
+        //IFileMerge fileMerge = new MemoryEfficientFileMerge();
+        IFileMerge fileMerge = new InMemoryFileMerge();
 
-fileMerge.MergeFiles("test1.txt", "test2.txt", "result.txt");
+        string tempFolderPath = "temp" + Path.DirectorySeparatorChar;
 
-stopwatch.Stop();
-Console.WriteLine($"File sorted in: {stopwatch.Elapsed}");
+        Directory.CreateDirectory(tempFolderPath);
+        fileMerge.MergeFiles("input_large1.txt", "input_large2.txt", $"{tempFolderPath}result.txt");
+
+        stopwatch.Stop();
+        Console.WriteLine($"File sorted in: {stopwatch.Elapsed}");
+    });
+

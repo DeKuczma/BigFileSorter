@@ -23,8 +23,7 @@ namespace LargeFileGenerator
 
             generatedString = Regex.Replace(generatedString, @"\t|\n|\r", String.Empty);
 
-            return generatedString.Substring(0, length);
-
+            return generatedString.Substring(0, Math.Min(generatedString.Length, length));
         }
     }
 }

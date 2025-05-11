@@ -19,6 +19,8 @@
         {
             int number = 0;
             int c;
+            if (Peek() == -1)
+                return -1;
             while((c = Peek()) != (int)'.')
             {
                 c = Read();

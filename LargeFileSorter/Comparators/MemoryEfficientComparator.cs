@@ -12,13 +12,20 @@
             {
                 int result = 0;
                 int firstC = readers[0].ReadAlphanumeric();
-                if (firstC == -1)
+                int secondC = readers[1].ReadAlphanumeric();
+
+                if(firstC == -1 && secondC == -1)
+                {
+                    if (firstNumber < secondNumber)
+                        result = -1;
+                    result = 1;
+                }
+                else if (firstC == -1)
                 {
                     result = 1;
                 }
                 else
                 {
-                    int secondC = readers[1].ReadAlphanumeric();
                     if (secondC == -1)
                     {
                         result = -1;
@@ -39,7 +46,6 @@
                     RollBackLineRead(readers);
                     return result;
                 }
-
             }
         }
 
