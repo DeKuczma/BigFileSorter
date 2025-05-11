@@ -1,4 +1,6 @@
-﻿namespace LargeFileSorter.Models
+﻿using System.Xml.Linq;
+
+namespace LargeFileSorter.Models
 {
     public class Line
     {
@@ -15,23 +17,27 @@
 
         public int Compare(Line line)
         {
-            int comaprisonResult = Text.CompareTo(line.Text);
-            if (comaprisonResult != 0)
-            {
-                return comaprisonResult;
-            }
-
-            if(Number < line.Number)
-            {
-                return -1;
-            }
-
-            return 1;
+            return CompareElements(this, line);
         }
 
         public override string ToString()
         {
             return $"{Number}{SEPARATOR}{Text}";
+        }
+        public static int CompareElements(Line x, Line y)
+        {
+            int comaprisonResult = x!.Text.CompareTo(y.Text);
+            if (comaprisonResult != 0)
+            {
+                return comaprisonResult;
+            }
+
+            if (x.Number < y.Number)
+            {
+                return -1;
+            }
+
+            return 1;
         }
     }
 }

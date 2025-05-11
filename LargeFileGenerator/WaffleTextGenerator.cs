@@ -17,8 +17,9 @@ namespace LargeFileGenerator
             int length = _random.Next((int)minLength, (int)maxLength);
 
             //generate block of text
+            int numberOfParagraphs = length / 80 + 1;
             var generatedString = WaffleEngine.Text(
-                paragraphs: 1,
+                paragraphs: numberOfParagraphs,
                 includeHeading: false);
 
             generatedString = Regex.Replace(generatedString, @"\t|\n|\r", String.Empty);

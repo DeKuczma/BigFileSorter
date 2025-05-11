@@ -1,10 +1,12 @@
-﻿namespace LargeFileGenerator
+﻿using CommandLine;
+
+namespace LargeFileGenerator
 {
     public class FileGenerator : IFileGenerator
     {
         private const int MAX_RANDOMIZED_SENTECES = 10000;
         private const int MIN_RANDOMIZED_SENTECES = 100;
-        private const int BYTES_PER_REPETITION = (10 * 1024);
+        private const int BYTES_PER_REPETITION = (50 * 1024);
 
         private readonly ITextGenerator _textGenerator;
         private readonly Random _random;
