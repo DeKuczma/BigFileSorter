@@ -2,7 +2,7 @@
   "profiles": {
     "LargeFileGenerator": {
       "commandName": "Project",
-      "commandLineArgs": "-o input.txt -s 10240"
+      "commandLineArgs": "-o input.txt -s 1073741824"
     }
   }
 }
