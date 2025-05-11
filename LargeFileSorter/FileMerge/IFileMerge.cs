@@ -2,6 +2,6 @@
 {
     public interface IFileMerge
     {
-        public void MergeFiles(string firstFile, string secondFile);
+        public void MergeFiles(string firstFile, string secondFile, string outputFile);
     }
 }

@@ -1,47 +1,54 @@
-﻿using LargeFileSorter.Comparators;
+﻿using LargeFileSorter.Models;
 
 namespace LargeFileSorter.FileMerge
 {
     public class InMemoryFileMerge : IFileMerge
     {
-        private readonly IComparator _comparator = new InMemoryComparator();
-
-        public void MergeFiles(string firstFile, string secondFile)
+        public void MergeFiles(string firstFile, string secondFile, string outputFile)
         {
             using (var firstReader = new StreamReader(firstFile))
-            using (var firstReaderCopy = new StreamReader(firstFile))
             using (var secondReader = new StreamReader(secondFile))
-            using (var secondReaderCopy = new StreamReader(secondFile))
+            using (var writer = new StreamWriter(outputFile))
             {
-
-                while (!firstReader.EndOfStream || !secondReader.EndOfStream)
+                var firstString = firstReader.ReadLine();
+                var secondString = secondReader.ReadLine();
+                while ((firstString != null && firstString.Any())
+                    || ((secondString != null && secondString.Any())))
                 {
-                    //Console.WriteLine(comparator.Compare(reader1, reader2));
-                    if (_comparator.Compare(firstReaderCopy, secondReaderCopy) < 0)
+                    if (firstString == null || !firstString.Any())
                     {
-                        Console.WriteLine(firstReader.ReadLine());
-                        firstReaderCopy.ReadLine();
+                        secondString = WriteToFile(writer, secondReader, secondString);
                     }
                     else
                     {
-                        Console.WriteLine(secondReader.ReadLine());
-                        secondReaderCopy.ReadLine();
-                    }
 
-                    if (secondReader.EndOfStream)
-                    {
-                        while (!firstReader.EndOfStream)
+                        if (secondString == null || !secondString.Any())
                         {
-                            Console.WriteLine(firstReader.ReadLine());
+                            firstString = WriteToFile(writer, firstReader, firstString);
                         }
-                    }
-                    else if (firstReader.EndOfStream)
-                    {
-                        while (!secondReader.EndOfStream)
-                            Console.WriteLine(secondReader.ReadLine());
+                        else
+                        {
+                            var firstLine = new Line(firstString);
+                            var secondLine = new Line(secondString);
+                            if (firstLine.Compare(secondLine) < 0)
+                            {
+                                firstString = WriteToFile(writer, firstReader, firstString);
+                            }
+                            else
+                            {
+                                secondString = WriteToFile(writer, secondReader, secondString);
+                            }
+                        }
                     }
                 }
             }
+        }
+
+        private string? WriteToFile(StreamWriter writer, StreamReader reader, string text)
+        {
+            Console.WriteLine(text);
+            writer.WriteLine(text);
+            return reader.ReadLine();
         }
     }
 }

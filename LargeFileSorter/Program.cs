@@ -1,9 +1,5 @@
-﻿using LargeFileSorter.Comparators;
-using LargeFileSorter.FileMerge;
+﻿using LargeFileSorter.FileMerge;
 
-IComparator comparator = new InMemoryComparator();
 IFileMerge fileMerge = new InMemoryFileMerge();
 
-fileMerge.MergeFiles("test1.txt", "test2.txt");
-
-
+fileMerge.MergeFiles("test1.txt", "test2.txt", "result.txt");
