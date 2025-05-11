@@ -4,6 +4,9 @@
     {
         private readonly int SPECIAL_ASCII_CHARACTERS = 31;
 
+        private readonly int LINE_SEPARATION_CHARACTERS = 2;
+        private readonly int ASCII_STARTING_NUMBER_POSITION = (int)'0';
+
         private readonly int ASCII_TABULATOR = 11;
 
         private long dataRead;
@@ -12,15 +15,26 @@
             dataRead = 0;
         }
 
+        public int ReadNumberFromLine()
+        {
+            int number = 0;
+            int c;
+            while((c = Peek()) != (int)'.')
+            {
+                c = Read();
+                number = number * 10 + c - ASCII_STARTING_NUMBER_POSITION;
+            }
+
+            SkipCarachters(LINE_SEPARATION_CHARACTERS);
+            return number;
+        }
+
+
         public void ResetPositionToPreviousLne()
         {
             BaseStream.Position = dataRead;
             DiscardBufferedData();
             char c = (char)Peek();
-            /*while()
-            {
-
-            }*/
         }
 
         public int ReadAlphanumeric()
@@ -67,6 +81,12 @@
             if (c <= SPECIAL_ASCII_CHARACTERS && c != ASCII_TABULATOR)
                 return false;
             return true;
+        }
+
+        private void SkipCarachters(int number)
+        {
+            for (int i = 0; i < number; i++)
+                Read();
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using LargeFileSorter.FileMerge;
+﻿using LargeFileSorter.Comparators;
+using LargeFileSorter.FileMerge;
 
-IFileMerge fileMerge = new InMemoryFileMerge();
+IFileMerge fileMerge = new MemoryEfficientFileMerge();
 
 fileMerge.MergeFiles("test1.txt", "test2.txt", "result.txt");

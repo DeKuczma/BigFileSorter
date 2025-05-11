@@ -3,6 +3,6 @@
     public interface IComparator
     {
         //return same values as string.ComapreTo
-        public int Compare(StreamReader firstReader, StreamReader secondReader);
+        public int Compare(MyStreamReader[] readers);
     }
 }
