@@ -17,14 +17,13 @@ namespace LargeFileSorter.FileMerge
                 {
                     if (firstString == null || !firstString.Any())
                     {
-                        secondString = WriteToFile(writer, secondReader, secondString);
+                        secondString = ProcessStream(writer, secondReader, secondString);
                     }
                     else
                     {
-
                         if (secondString == null || !secondString.Any())
                         {
-                            firstString = WriteToFile(writer, firstReader, firstString);
+                            firstString = ProcessStream(writer, firstReader, firstString);
                         }
                         else
                         {
@@ -32,11 +31,11 @@ namespace LargeFileSorter.FileMerge
                             var secondLine = new Line(secondString);
                             if (firstLine.Compare(secondLine) < 0)
                             {
-                                firstString = WriteToFile(writer, firstReader, firstString);
+                                firstString = ProcessStream(writer, firstReader, firstString);
                             }
                             else
                             {
-                                secondString = WriteToFile(writer, secondReader, secondString);
+                                secondString = ProcessStream(writer, secondReader, secondString);
                             }
                         }
                     }
@@ -44,9 +43,8 @@ namespace LargeFileSorter.FileMerge
             }
         }
 
-        private string? WriteToFile(StreamWriter writer, StreamReader reader, string text)
+        private string? ProcessStream(StreamWriter writer, StreamReader reader, string text)
         {
-            Console.WriteLine(text);
             writer.WriteLine(text);
             return reader.ReadLine();
         }
