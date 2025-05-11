@@ -1,2 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using LargeFileSorter.FileMerge;
+
+IFileMerge fileMerge = new InMemoryFileMerge();
+
+fileMerge.MergeFiles("test1.txt", "test2.txt", "result.txt");
