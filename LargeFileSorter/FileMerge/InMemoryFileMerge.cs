@@ -43,7 +43,7 @@ namespace LargeFileSorter.FileMerge
             }
         }
 
-        private string? ProcessStream(StreamWriter writer, StreamReader reader, string text)
+        private string? ProcessStream(StreamWriter writer, StreamReader reader, string? text)
         {
             writer.WriteLine(text);
             return reader.ReadLine();
