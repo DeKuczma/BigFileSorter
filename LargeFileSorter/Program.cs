@@ -1,8 +1,7 @@
 ﻿using CommandLine;
 using LargeFileSorter;
-using LargeFileSorter.FileMerge;
+using LargeFileSorter.Utils;
 using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
 
 
 Options options = null;
@@ -15,15 +14,13 @@ if (options == null)
 var stopwatch = new Stopwatch();
 stopwatch.Start();
 
-Queue<string> generatedFiles = new Queue<string>();
-var mergerOrchestrator = new FileMergerOrchestrator(FileMergerEnumerator.InMemory);
+List<string> generatedFiles = new List<string>();
+FileSplitter splitter = new FileSplitter();
+KWaySort kWay = new KWaySort();
 
 Directory.CreateDirectory(ConstStrings.TEMP_DIRECOTRY + Path.DirectorySeparatorChar);
-FileSplitter splitter = new FileSplitter();
-
 await splitter.SplitFile(options.InputFile, generatedFiles);
-
-await mergerOrchestrator.OrchestrateFileMerge(generatedFiles,options.OutputFile);
+await kWay.SortFiles(generatedFiles, options.OutputFile);
 
 stopwatch.Stop();
 Console.WriteLine($"File sorted in: {stopwatch.Elapsed}");

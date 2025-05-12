@@ -1,4 +1,5 @@
 ﻿using LargeFileSorter.Models;
+using LargeFileSorter.Utils;
 using System.Text;
 
 namespace LargeFileSorter
@@ -7,12 +8,12 @@ namespace LargeFileSorter
     {
         private readonly int MAX_LOAD_SIZE = 1024 * 1024 * 250;
         private readonly int MAX_CONCURRENT_TASKS = 5;
-        public async Task SplitFile(string file, Queue<string> generatedFiles)
+        public async Task SplitFile(string file, List<string> generatedFiles)
         {
             using var reader = new StreamReader(file, Encoding.UTF8, true, Options.ReaderBuferSize);
 
             long generated = 0;
-            string singleLine;
+            string? singleLine;
             long loadedSize = 0;
             List<Task<string>> tasks = new List<Task<string>>();
             List<Line> lines = new List<Line>();
@@ -32,13 +33,13 @@ namespace LargeFileSorter
                     {
                         var processed = await Task.WhenAny(tasks);
                         var result = processed.Result;
-                        generatedFiles.Enqueue(result);
+                        generatedFiles.Add(result);
                         tasks.Remove(processed);
                     }
 
                     tasks.Add(Task<string>.Run(() => {
 
-                        linesCopy.Sort(Line.CompareElements);
+                        linesCopy.Sort(new LineComparer());
                         using (var writer = new StreamWriter(fileName, false, Encoding.UTF8, Options.WriterBuferSize))
                         {
                             foreach (var line in linesCopy)
@@ -58,7 +59,7 @@ namespace LargeFileSorter
             await Task.WhenAll(tasks);
             foreach (var task in tasks)
             {
-                generatedFiles.Enqueue(task.Result);
+                generatedFiles.Add(task.Result);
             }
         }
     }

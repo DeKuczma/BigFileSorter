@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LargeFileSorter
+namespace LargeFileSorter.Utils
 {
     public class ConstStrings
     {
