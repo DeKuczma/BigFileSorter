@@ -39,7 +39,7 @@ namespace LargeFileSorter
 
                     tasks.Add(Task<string>.Run(() => {
 
-                        linesCopy.Sort(Line.CompareElements);
+                        linesCopy.Sort(new LineComparer());
                         using (var writer = new StreamWriter(fileName, false, Encoding.UTF8, Options.WriterBuferSize))
                         {
                             foreach (var line in linesCopy)

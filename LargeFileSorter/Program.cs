@@ -1,9 +1,7 @@
 ﻿using CommandLine;
 using LargeFileSorter;
-using LargeFileSorter.FileMerge;
 using LargeFileSorter.Utils;
 using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
 
 
 Options options = null;
@@ -22,7 +20,7 @@ KWaySort kWay = new KWaySort();
 
 Directory.CreateDirectory(ConstStrings.TEMP_DIRECOTRY + Path.DirectorySeparatorChar);
 await splitter.SplitFile(options.InputFile, generatedFiles);
-kWay.SortFiles(generatedFiles, options.OutputFile);
+await kWay.SortFiles(generatedFiles, options.OutputFile);
 
 stopwatch.Stop();
 Console.WriteLine($"File sorted in: {stopwatch.Elapsed}");

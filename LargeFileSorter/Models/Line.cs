@@ -17,27 +17,23 @@ namespace LargeFileSorter.Models
 
         public int Compare(Line line)
         {
-            return CompareElements(this, line);
-        }
-
-        public override string ToString()
-        {
-            return $"{Number}{SEPARATOR}{Text}";
-        }
-        public static int CompareElements(Line x, Line y)
-        {
-            int comaprisonResult = x!.Text.CompareTo(y.Text);
+            int comaprisonResult = Text.CompareTo(line.Text);
             if (comaprisonResult != 0)
             {
                 return comaprisonResult;
             }
 
-            if (x.Number < y.Number)
+            if (Number < line.Number)
             {
                 return -1;
             }
 
             return 1;
+        }
+
+        public override string ToString()
+        {
+            return $"{Number}{SEPARATOR}{Text}";
         }
     }
 }
