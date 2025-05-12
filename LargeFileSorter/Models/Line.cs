@@ -17,7 +17,7 @@ namespace LargeFileSorter.Models
 
         public int Compare(Line line)
         {
-            int comaprisonResult = Text.CompareTo(line.Text);
+            int comaprisonResult = string.Compare(Text, line.Text, StringComparison.Ordinal);
             if (comaprisonResult != 0)
             {
                 return comaprisonResult;
