@@ -1,4 +1,5 @@
 ﻿using LargeFileSorter.FileMerge;
+using LargeFileSorter.Utils;
 using System.Collections.Concurrent;
 
 namespace LargeFileSorter
