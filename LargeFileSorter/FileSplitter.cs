@@ -1,30 +1,32 @@
 ﻿using LargeFileSorter.Models;
+using System.Text;
 
 namespace LargeFileSorter
 {
     public class FileSplitter
     {
-        private readonly int MAX_LINES_LOAD = 606000;
+        private readonly int MAX_LOAD_SIZE = 1024 * 1024 * 250;
         private readonly int MAX_CONCURRENT_TASKS = 5;
         public async Task SplitFile(string file, Queue<string> generatedFiles)
         {
-            using var reader = new StreamReader(file);
+            using var reader = new StreamReader(file, Encoding.UTF8, true, Options.ReaderBuferSize);
 
             long generated = 0;
-            List<Task<string>> tasks = new List<Task<string>>();
             string singleLine;
+            long loadedSize = 0;
+            List<Task<string>> tasks = new List<Task<string>>();
             List<Line> lines = new List<Line>();
 
-            while((singleLine = reader.ReadLine()) != null)
+            while ((singleLine = reader.ReadLine()) != null)
             {
+                loadedSize += singleLine.Length;
                 lines.Add(new Line(singleLine));
 
-                if (lines.Count == MAX_LINES_LOAD || reader.EndOfStream)
+                if (loadedSize >= MAX_LOAD_SIZE || reader.EndOfStream)
                 {
                     List<Line> linesCopy = lines.ToList();
                     long fileSufix = generated;
                     string fileName = $"{ConstStrings.TEMP_DIRECOTRY}{Path.DirectorySeparatorChar}{ConstStrings.TEMP_FILES_NAME}{fileSufix}{ConstStrings.TEMP_FILES_EXTENSION}";
-                    generated++;
 
                     if (tasks.Count == MAX_CONCURRENT_TASKS)
                     {
@@ -37,7 +39,7 @@ namespace LargeFileSorter
                     tasks.Add(Task<string>.Run(() => {
 
                         linesCopy.Sort(Line.CompareElements);
-                        using (var writer = new StreamWriter(fileName))
+                        using (var writer = new StreamWriter(fileName, false, Encoding.UTF8, Options.WriterBuferSize))
                         {
                             foreach (var line in linesCopy)
                             {
@@ -46,13 +48,15 @@ namespace LargeFileSorter
                         }
                         return Task.FromResult(fileName);
                     }));
-
+                    
+                    generated++;
+                    loadedSize = 0;
                     lines = new List<Line>();
                 }
             }
 
             await Task.WhenAll(tasks);
-            foreach(var task in tasks)
+            foreach (var task in tasks)
             {
                 generatedFiles.Enqueue(task.Result);
             }
