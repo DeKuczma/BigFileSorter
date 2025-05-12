@@ -2,6 +2,7 @@
 using LargeFileSorter;
 using LargeFileSorter.FileMerge;
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 
 
 Options options = null;
@@ -26,4 +27,3 @@ await mergerOrchestrator.OrchestrateFileMerge(generatedFiles,options.OutputFile)
 
 stopwatch.Stop();
 Console.WriteLine($"File sorted in: {stopwatch.Elapsed}");
-
